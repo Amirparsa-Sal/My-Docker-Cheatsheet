@@ -1,6 +1,6 @@
 # My Docker Cheatsheet
 
-### Managing Containers
+## Managing Containers
 
 To run an image:
 
@@ -17,6 +17,12 @@ It downloads the image from docker hub if the image is not available locally.
 - `-e ENV_NAME=VALUE`: sets an environment variable inside the container.
 
 - `-it`: starts a new interactive container
+
+- `--net`: specifies the network of the container
+
+- `--net-alias`: adds an alias DNS record  for the container
+
+- `--rm`: to remove the container automatically after finishing its job.
 
 To stop a running container:
 
@@ -88,7 +94,7 @@ docker container inspect <container_name>
 
 - `--format`: formats the output of docker inspect. e.g: `--format '{{ .NetworkSettings.IPAddress }}'` to get the IP address of the container.
 
-### Networking
+## Networking
 
 To create a network:
 
@@ -97,6 +103,14 @@ docker network create <network_name>
 ```
 
 - `--driver`: to set the driver of the network (bridge, host, null)
+
+To remove a network:
+
+```
+docker network rm <network_name>
+```
+
+
 
 To see a list of networks:
 
@@ -120,4 +134,50 @@ To dynamically disconnect a network from a container:
 
 ```
 docker network disconnect <network_name> <container_name>
+```
+
+Note: Containers on the same custom network can access each other using their names instead of their IP address. For the bridge network we must use `-link` to link containers.
+
+## Images
+
+To pull an image from the registry:
+
+```
+docker image pull <image_name>
+```
+
+To see a list of pulled images:
+
+```
+docker image ls
+```
+
+To remove an image:
+
+```
+docker image rm <image_name>
+```
+
+To see the image's changes history:
+
+```
+docker image history <image_name>
+```
+
+To see metadata about the image:
+
+```
+docker image inspect <image_name> 
+```
+
+To assign a new tag to an image:
+
+```
+docker image tag <src_tag> <dst_tag>
+```
+
+To push an image:
+
+```
+docker image push <image_name>
 ```
