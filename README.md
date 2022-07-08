@@ -1,6 +1,6 @@
 # My Docker Cheatsheet
 
-## Managing Containers
+## Containers Commands
 
 To run an image:
 
@@ -94,7 +94,7 @@ docker container inspect <container_name>
 
 - `--format`: formats the output of docker inspect. e.g: `--format '{{ .NetworkSettings.IPAddress }}'` to get the IP address of the container.
 
-## Networking
+## Networking Commands
 
 To create a network:
 
@@ -109,8 +109,6 @@ To remove a network:
 ```
 docker network rm <network_name>
 ```
-
-
 
 To see a list of networks:
 
@@ -138,7 +136,7 @@ docker network disconnect <network_name> <container_name>
 
 Note: Containers on the same custom network can access each other using their names instead of their IP address. For the bridge network we must use `-link` to link containers.
 
-## Images
+## Images Commands
 
 To pull an image from the registry:
 
@@ -181,3 +179,83 @@ To push an image:
 ```
 docker image push <image_name>
 ```
+
+To build an image using a Dockerfile:
+
+```
+docker image build <dockerfile_path>
+```
+
+- `-t`: Tags the image after building
+
+- `-f`: specifies the name of the Dockerfile
+
+## Dockerfile
+
+#### FROM
+
+Specifies the base image of the image:
+
+```dockerfile
+FROM <image_name>
+```
+
+#### RUN
+
+Runs a command:
+
+```dockerfile
+RUN <command1> && <command2> ...
+RUN ["executable", "param1", "param2"]
+```
+
+- Putting `&&` between the commands ensures that they will create only one layer in image.
+
+#### ENV
+
+Sets an environment variable:
+
+```dockerfile
+ENV <variable_name>=<variable_value> ...
+ENV <variable_name> <<variable_value>
+```
+
+-  We can use env variables in dockerfile like this: `${variable_name}`
+
+#### WORKDIR
+
+Changes the current working directory inside the container:
+
+```dockerfile
+WORKDIR <path>
+```
+
+#### COPY
+
+Copies files or directories from our system into the container:
+
+```dockerfile
+COPY <src_path> <dest_path>
+```
+
+#### CMD
+
+Provides defaults for an executing container:
+
+```dockerfile
+CMD ["executable", "param1", "param2"]
+CMD ["param1", "param2"]
+CMD <command>
+```
+
+- There can only be one `CMD` instruction in a `Dockerfile`. If you list more than one `CMD` then only the last `CMD` will take effect.
+
+#### EXPOSE
+
+ Informs Docker that the container listens on the specified network ports at runtime:
+
+```dockerfile
+EXPOSE <port> [<port>/protocol]
+```
+
+- The `EXPOSE` instruction does not actually publish the port. It functions as a type of documentation between the person who builds the image and the person who runs the container
