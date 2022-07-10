@@ -24,6 +24,8 @@ It downloads the image from docker hub if the image is not available locally.
 
 - `--rm`: to remove the container automatically after finishing its job.
 
+- `-v <vol_name>:<vol_path>`: specifies a volume for the container
+
 To stop a running container:
 
 ```
@@ -190,6 +192,40 @@ docker image build <dockerfile_path>
 
 - `-f`: specifies the name of the Dockerfile
 
+## Volume Commands
+
+To create new volume:
+
+```
+docker volume create <volume_name>
+```
+
+To view all volumes:
+
+```
+docker volume ls
+```
+
+To remove a volume:
+
+```
+docker volume rm <volume_name>
+```
+
+To remove all unused volumes:
+
+```
+docker volume prune
+```
+
+
+
+To see metdata about a volume:
+
+```
+docker volume inspect <volume_name>
+```
+
 ## Dockerfile
 
 #### FROM
@@ -220,7 +256,7 @@ ENV <variable_name>=<variable_value> ...
 ENV <variable_name> <<variable_value>
 ```
 
--  We can use env variables in dockerfile like this: `${variable_name}`
+- We can use env variables in dockerfile like this: `${variable_name}`
 
 #### WORKDIR
 
@@ -259,3 +295,12 @@ EXPOSE <port> [<port>/protocol]
 ```
 
 - The `EXPOSE` instruction does not actually publish the port. It functions as a type of documentation between the person who builds the image and the person who runs the container
+
+#### VOLUME
+
+Creates a mount point with the specified name:
+
+```dockerfile
+VOLUME ["vol_path"]
+VOLUME <vol_path> ...
+```
