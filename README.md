@@ -14,7 +14,7 @@ It downloads the image from docker hub if the image is not available locally.
 
 - `--name <container_name>`: assigns an arbitrary name for the container.
 
-- `-e ENV_NAME=VALUE`: sets an environment variable inside the container.
+- `-e <env_name>=<env_value>`: sets an environment variable inside the container.
 
 - `-it`: starts a new interactive container
 
@@ -218,8 +218,6 @@ To remove all unused volumes:
 docker volume prune
 ```
 
-
-
 To see metdata about a volume:
 
 ```
@@ -303,4 +301,68 @@ Creates a mount point with the specified name:
 ```dockerfile
 VOLUME ["vol_path"]
 VOLUME <vol_path> ...
+```
+
+## Docker-Compose
+
+```yaml
+services:
+  service1:
+    build: 
+      context: .
+      dockerfile: <dockerfile_name>
+    image: <image1_name>
+    ports:
+      - '<host_port1>:<container_port1>'
+      - '<host_port2>:<container_port2>'
+    volumes:
+      - <bind_path1> or <named_vol1>:<container_path1>
+      - <bind_path2> or <named_vol2><container_path2>
+    environment:
+      - <key1>=<value1>
+      - <key2>=<value2>
+    depends_on:
+      - "service2"
+
+  service2:
+    ...
+
+volumes:
+  <named_vol1>:
+  <named_vol2>:  
+
+network:
+    ...
+```
+
+To run the docker-compose file;
+
+```
+docker-compose up
+```
+
+- `-f`: specifies the name of the docker-compose file
+
+- `-d`: runs docker-compose in background
+
+   
+
+To stop the running docker-compose:
+
+```
+docker-compose down
+```
+
+- `-v`: removes all volumes defined in volumes section after stopping
+
+- `--rmi type` : removes images after downing the docker-compose
+  
+  - `type=all`: removes all images
+  
+  - `type=local`: removes only images that don't have custom tag set by the `image` field.
+
+To rebuild images that are created using docker-compose:
+
+```
+docker-compose build
 ```
